@@ -26,8 +26,8 @@ pub trait BlockImportOperation {
 	/// Associated state backend type.
 	type State: state_machine::backend::Backend;
 
-	/// Returns pending state.
-	fn state(&self) -> error::Result<&Self::State>;
+	/// Returns pending state. Returns None for backends with locally-unavailable state data.
+	fn state(&self) -> error::Result<Option<&Self::State>>;
 	/// Append block data to the transaction.
 	fn set_block_data(&mut self, header: block::Header, body: Option<block::Body>, justification: Option<primitives::bft::Justification>, is_new_best: bool) -> error::Result<()>;
 	/// Inject storage data into the database.
@@ -37,7 +37,7 @@ pub trait BlockImportOperation {
 }
 
 /// Client backend. Manages the data layer.
-pub trait Backend {
+pub trait Backend: Send + Sync {
 	/// Associated block insertion operation type.
 	type BlockImportOperation: BlockImportOperation;
 	/// Associated blockchain backend type.
