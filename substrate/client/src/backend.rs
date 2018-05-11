@@ -54,3 +54,9 @@ pub trait Backend: Send + Sync {
 	/// Returns state backend for specified block.
 	fn state_at(&self, block: BlockId) -> error::Result<Self::State>;
 }
+
+/// Mark for all Backend implementations, that are making use of state data, stored locally.
+pub trait LocalBackend: Backend {}
+
+/// Mark for all Backend implementations, that are fetching required state data from remote nodes.
+pub trait RemoteBackend: Backend {}

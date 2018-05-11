@@ -416,6 +416,8 @@ impl client::backend::Backend for Backend {
 	}
 }
 
+impl client::backend::LocalBackend for Backend {}
+
 #[cfg(test)]
 mod tests {
 	use super::*;
